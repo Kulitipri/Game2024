@@ -1,0 +1,74 @@
+public abstract class Hero extends Character {
+    private double prot;  // Giảm dame
+    private int mana;
+    private int maxMana;
+
+    public Hero(String name, int hp, int physicalDamage, int magicPower, int level, double prot, int maxMana) {
+        super(name, hp, physicalDamage, magicPower, level);
+        this.prot = prot;
+        this.mana = 0;
+        this.maxMana = maxMana;
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        int reducedDamage = (int) (damage * (1 - prot));  // giảm dame
+        super.takeDamage(reducedDamage);  
+    }
+
+    @Override
+    public void basicAttack(Character target) {
+        super.basicAttack(target);
+        mana++;  // Hero tăng mana sau mỗi dame
+        System.out.println(this.getName() + " gains 1 mana. Current mana: " + mana + "/" + maxMana);
+    }
+    
+    // Check if ultimate can be used
+    public boolean canUseUltimate() {
+        return mana >= maxMana;
+    }
+    
+    public abstract void useUltimate(Character target);
+    
+    public abstract void levelUp();
+
+	public double getProt() {
+		return prot;
+	}
+
+	public void setProt(double prot) {
+		this.prot = prot;
+	}
+
+	public int getMana() {
+		return mana;
+	}
+
+	public void setMana(int mana) {
+        // Ensure mana doesn't exceed maxMana
+        this.mana = Math.min(mana, maxMana);
+    }
+
+	public int getMaxMana() {
+		return maxMana;
+	}
+
+
+	public void addMana(int amount) {
+        // Increment mana but cap it at maxMana
+        this.mana = Math.min(this.mana + amount, maxMana);
+        System.out.println(getName() + " gains " + amount + " mana. Current mana: " + this.mana + "/" + this.maxMana);
+    }
+
+	@Override
+	public void displayCharacterInfo() {
+	       System.out.println("Name: " + this.getName());
+	       System.out.println("Level: " + this.getLevel());
+	       System.out.println("HP: " + this.getHp());
+	       System.out.println("Physical Damage: " + this.getPhysicalDamage());
+	       System.out.println("Magic Power: " + this.getMagicPower());
+	       System.out.println("Max mana " +maxMana);
+	       System.out.println("Prot " + prot*100 +"%");
+	       
+	    }
+}
